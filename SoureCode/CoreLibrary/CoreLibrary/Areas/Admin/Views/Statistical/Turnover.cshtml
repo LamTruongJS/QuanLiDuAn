@@ -1,0 +1,44 @@
+﻿@{
+    ViewBag.Title = "Statiscal Turnover";
+}
+
+<div class="alert alert-success" role="alert">
+    <span class="fs-2">Turnover</span>
+</div>
+<nav class="m-0">
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+        <button class="nav-link active itemBar text-muted" id="nav-bar-tab" data-bs-toggle="tab" data-bs-target="#nav-bar" type="button" role="tab" aria-controls="nav-bar" aria-selected="true">Bar</button>
+        <button class="nav-link itemLine text-muted" id="nav-line-tab" data-bs-toggle="tab" data-bs-target="#nav-line" type="button" role="tab" aria-controls="nav-line" aria-selected="false">Line</button>
+        <button class="nav-link itemHorizontalBar text-muted" id="nav-horizontalBar-tab" data-bs-toggle="tab" data-bs-target="#nav-horizontalBar" type="button" role="tab" aria-controls="nav-horizontalBar" aria-selected="false">HorizontalBar</button>
+    </div>
+</nav>
+<div class="tab-content p-0" id="nav-tabContent">
+    <div class="tab-pane show active w-100" id="nav-bar" role="tabpanel" aria-labelledby="nav-bar-tab">
+        <canvas id="myChartBar" class="w-100" style="width: 100rem; height: 30rem"></canvas>
+    </div>
+    <div class="container tab-pane w-100 m-0 p-0" id="nav-line" role="tabpanel" aria-labelledby="nav-line-tab">
+        <canvas id="myChartLine" class="w-100 m-0" style="width: 100rem; height: 30rem"></canvas>
+    </div>
+    <div class="container tab-pane w-100 m-0 p-0" id="nav-horizontalBar" role="tabpanel" aria-labelledby="nav-horizontalBar-tab">
+        <canvas id="myChartHorizontalBar" class="w-100" style="width: 100rem; height: 30rem"></canvas>
+    </div>
+</div>
+
+<nav class="d-none">
+    <div class="turnover">100</div>
+    <div class="turnover">212</div>
+    <div class="turnover">123</div>
+    <div class="turnover">344</div>
+    <div class="turnover">154</div>
+    <div class="turnover">163</div>
+    <div class="turnover">173</div>
+    <div class="turnover">138</div>
+    <div class="turnover">494</div>
+    <div class="turnover">510</div>
+    <div class="turnover">121</div>
+    <div class="turnover">221</div>
+</nav>
+
+@section scripts{ 
+    <script src="~/assets/js/admin/chartTurnover.js"></script>
+}

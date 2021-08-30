@@ -1,0 +1,26 @@
+﻿@{
+    ViewBag.Title = "Latest News";
+}
+
+<div class="col-8">
+    <p>Latest News</p>
+    <h3>What's hot in the news</h3>
+    <hr />
+
+    <div class="row mx-0">
+        <div class="col-4">
+            <a href="#" class="d-block">
+                <img src="~/assets/img/news/img-01.jpg" class="img-thumbnail w-100" />
+            </a>
+            <p class="text-muted mb-0">Mon, August 10</p>
+            <hr class="my-1" />
+            <p class="fw-bold mb-0"><a href="#" class="text-decoration-none text-dark">Where The Wild Things Are</a></p>
+            <p class="mb-0">By : <a href="#" class="text-decoration-none text-success">Johnson Adam</a></p>
+            <p class="text-muted fw-lighter"><i class="icofont-speech-comments"></i> 21,145 Comments / <i class="icofont-eye"></i> 201,455 Views</p>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/assets/js/reader/latest_news.js"></script>
+}

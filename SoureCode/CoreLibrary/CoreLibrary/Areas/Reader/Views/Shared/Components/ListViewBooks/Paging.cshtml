@@ -1,0 +1,134 @@
+﻿@inject CoreLibrary.Helper.Services.ServerUrlService _serverUrl
+@inject CoreLibrary.Areas.Reader.Data.EBookContext _db
+@inject Microsoft.AspNetCore.Identity.SignInManager<User> _signInManager
+@model IEnumerable<Book>
+@{ 
+    int star = 0;
+}
+<!-- List View Books -->
+<div class="row mx-0 my-3">
+    <div class="col-8">
+        <h3>@ViewBag.Title <span class="text-muted fs-5">(8)</span></h3>
+    </div>
+    <div class="col-4">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item"><a class="page-link" href="#">Next</a></li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+<div class="row mx-0" id="container">
+    @foreach (var book in Model)
+    {
+        <div class="col-3">
+            <img src="@(_serverUrl.ThumbnailUrl(book.ThumbnailUrl))" class="w-100 p-2 height-thumbnail" />
+            <hr class="my-0" />
+            <p class="text-muted text-end">@book.Category.Name</p>
+            <div class="text-block-wrap height2line">
+                <a asp-action="Detail" asp-controller="Book" asp-area="reader" asp-route-id="@book.Id"
+                   class="text-decoration-none text-dark fw-bold d-block">@book.Name</a>
+            </div>
+
+            <p class="text-muted mb-0">
+                <span>By : </span>
+                <a href="#" class="text-success text-decoration-none">@(book.Author.LastName + " " + book.Author.FirstName)</a>
+            </p>
+            <p class="mb-2">
+                @{
+                    int n = 0;
+                    foreach (var i in book.Interactions)
+                    {
+                        if (i.Evaluation != 0)
+                        {
+                            star = star + i.Evaluation;
+                            n = n + 1;
+                        }
+                    }
+                    if (n != 0)
+                    {
+                        for (int i = 1; i <= 5; i++)
+                        {
+                            if (i <= star)
+                            {
+                                <i class="icofont-star fs-6 start-yellow"></i>
+                            }
+                            else
+                            {
+                                <i class="icofont-star fs-6"></i>
+                            }
+                        }
+                        <span>(@n)</span>
+                    }
+                    else
+                    {
+                        <i class="icofont-star fs-6"></i>
+                        <i class="icofont-star fs-6"></i>
+                        <i class="icofont-star fs-6"></i>
+                        <i class="icofont-star fs-6"></i>
+                        <i class="icofont-star fs-6"></i>
+                        <span>(@n)</span>
+                    }
+                    star = 0;
+                }
+            </p>
+            <div class="row mx-0 mb-2">
+                <div class="col">
+                    <strong class="text-dark fs-3">$@book.Price</strong>
+                </div>
+                @if (book.ReducedPrice >= 0)
+                {
+                    <div class="col">
+                        <del class="text-muted fs-4">$@book.ReducedPrice</del>
+                    </div>
+                }
+            </div>
+            @{
+                if (_signInManager.IsSignedIn(User))
+                {
+                    string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                    var basket = _db.Baskets.Where(bk => bk.BookId == book.Id && bk.UserId == userId).FirstOrDefault();
+                    if (basket != null)
+                    {
+                        <a href="@(_serverUrl.BookPdfUrl(book.PdfUrl))" target="_blank" class="btn btn-primary btn-sm me-3">Read now</a>
+                    }
+                    else
+                    {
+                        <a data-ajax="true" asp-action="AddToBasket" asp-controller="Basket" asp-area="reader" asp-route-id="@book.Id"
+                           class="btn btn-outline-success btn-sm basket"
+                           data-ajax-confirm="Are you sure ?"
+                           data-ajax-success="success">Add To Basket</a>
+                    }
+                }
+                else
+                {
+                    <a data-ajax="true" asp-action="AddToBasket" asp-controller="Basket" asp-area="reader" asp-route-id="@book.Id"
+                       class="btn btn-outline-success btn-sm basket"
+                       data-ajax-confirm="Are you sure ?"
+                       data-ajax-success="success">Add To Basket</a>
+                }
+            }
+        </div>
+    }
+
+</div>
+<!-- End List View Books -->
+
+<script>
+    var success = function (response) {
+        alert(response);
+    };
+    function AddBasket(event) {
+        event.preventDefault();
+        //console.log('hello');
+        //console.log(event.target);
+        //event.target.classList.add('disabled');
+        //event.target.innerHTML = 'Added';
+    }
+</script>
+<!-- End List View Books -->

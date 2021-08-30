@@ -1,0 +1,101 @@
+﻿@model BookModel
+@inject Microsoft.AspNetCore.Identity.UserManager<User> _userManager
+@{
+    Layout = "_LayoutEmpty";
+    ViewBag.Title = "Upload Book";
+}
+
+<div class="my-3 ms-5 fs-5 p-2 my-0">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Home" asp-area="reader">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Upload Book</li>
+        </ol>
+    </nav>
+</div>
+<h3 class="text-center">Upload Book</h3>
+<h5 class="text-center">Everyone is looking forward to your book</h5>
+<div class="row mx-0 justify-content-center">
+    <div class="col-7">
+        <form method="post" enctype="multipart/form-data" asp-action="Create" asp-controller="Book" asp-area="reader">
+            @if (!String.IsNullOrEmpty(ViewBag.Success))
+            {
+                @if (ViewBag.Success == "true")
+                {
+                    <div class="alert alert-success" role="alert">
+                        <strong>You have successfully uploaded !</strong>
+                        <p>Please wait for some time for the admin to approve before publishing</p>
+                    </div>
+                }
+                else if (ViewBag.Success == "false")
+                {
+                    <div class="alert alert-danger" role="alert">
+                        You have successfully uploaded !
+                    </div>
+                }
+
+            }
+            <div asp-validation-summary="ModelOnly"></div>
+            <div class="row g-2 mb-3">
+                <div class="form-floating col-6">
+                    <input asp-for="Name" class="form-control">
+                    <label asp-for="Name"></label>
+                    <span class="text-danger" asp-validation-for="Name"></span>
+                </div>
+
+                <div class="form-floating col-6">
+                    <input asp-for="Author" class="form-control" value="@(User.FindFirst("LastName").Value + " " + User.FindFirst("FirstName").Value )" readonly>
+                    <label asp-for="Author"></label>
+
+                </div>
+            </div>
+
+            <div class="row g-2 mb-3">
+                <div class="col-md">
+                    <div class="form-floating">
+                        <select class="form-select" asp-for="LanguageId" asp-items="ViewBag.LanguageId"></select>
+                        <label asp-for="LanguageId"></label>
+                        <span class="text-danger" asp-validation-for="LanguageId"></span>
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="form-floating">
+                        <select class="form-select" asp-for="CategoryId" asp-items="ViewBag.CategoryId"></select>
+                        <label asp-for="CategoryId"></label>
+                        <span class="text-danger" asp-validation-for="CategoryId"></span>
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="form-floating">
+                        <input class="form-control" asp-for="Price">
+                        <label asp-for="Price"></label>
+                        <span class="text-danger" asp-validation-for="Price"></span>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="mb-3">
+                <label class="form-label" asp-for="Path"></label>
+                <input class="form-control form-control-sm" asp-for="Path" accept="application/pdf">
+                <small class="text-muted d-block">Only accept pdf file</small>
+                <span class="text-danger" asp-validation-for="Path"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <textarea class="form-control" asp-for="AboutBook"></textarea>
+                <label asp-for="AboutBook">About Book</label>
+                <span class="text-danger" asp-validation-for="AboutBook"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <textarea class="form-control" asp-for="Reviews"></textarea>
+                <label asp-for="Reviews">Reviews your book</label>
+                <span class="text-danger" asp-validation-for="Reviews"></span>
+            </div>
+
+            <button type="submit" class="btn btn-success btn-sm" id="submit-button">Upload</button>
+            <button type="reset" class="btn btn-secondary btn-sm">Reset</button>
+        </form>
+    </div>
+</div>

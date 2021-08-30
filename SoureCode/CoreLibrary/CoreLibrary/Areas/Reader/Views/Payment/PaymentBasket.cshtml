@@ -1,0 +1,71 @@
+﻿@model PaymentBasketModel
+@inject CoreLibrary.Helper.Services.ServerUrlService _serverUrl
+@inject CoreLibrary.Areas.Reader.Data.EBookContext _db
+@{
+    Layout = "_LayoutEmpty";
+    var books = _db.Books.Where(bk => Model.BookIds.Contains(bk.Id)).ToList();
+}
+
+<nav aria-label="breadcrumb" class="ms-5 fs-4 mb-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Home">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Payment</li>
+    </ol>
+</nav>
+@if (ViewBag.Success == true)
+{
+    <div class="alert alert-success" role="alert">
+        You have successfully paid !!
+    </div>
+}
+<div class="row justify-content-center mx-0">
+    <div class="col-4 shadow rounded px-0 bg-light">
+        <form class="p-3" asp-action="PaymentBasket" asp-controller="Payment" method="post">
+            <h3>Payment</h3>
+            <input type="hidden" asp-for="BookIds" value="@Model.BookIds" />
+            <hr />
+            <p>
+                <i class="icofont-visa fs-3 me-2"></i>
+                <i class="icofont-amazon-alt fs-3 me-2"></i>
+                <i class="icofont-mastercard fs-3 me-2"></i>
+                <i class="icofont-jcb fs-3 me-2"></i>
+            </p>
+            <div class="mb-3">
+                <label asp-for="CardHolderName" class="form-label"></label>
+                <input asp-for="CardHolderName" class="form-control">
+                <span class="text-danger" asp-validation-for="CardHolderName"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="CardNumber" class="form-label"></label>
+                <input asp-for="CardNumber" class="form-control">
+                <span class="text-danger" asp-validation-for="CardNumber"></span>
+            </div>
+            <div class="mb-3">
+                <input asp-for="IsRemember" class="form-check-input">
+                <label asp-for="IsRemember" class="form-check-label"></label>
+                <span class="text-danger" asp-validation-for="IsRemember"></span>
+            </div>
+            <button class="btn btn-success my-4" type="submit">Pay now</button>
+        </form>
+    </div>
+    <div class="col-5 ms-5 shadow rounded px-0 bg-light">
+        <div class="p-3">
+            <h3 class="">Book Infomation</h3>
+            <hr />
+            @foreach (var book in books)
+            {
+                <div class="row mb-2">
+                    <div class="col-2">
+                        <img src="@(_serverUrl.ThumbnailUrl(book.ThumbnailUrl))" class="w-75" />
+                    </div>
+                    <div class="col-7">
+                        <p class="text-muted mb-0">@book.Name</p>
+                        <p class="mb-0">@book.Author</p>
+                        <p class="text-primary fw-bold mb-0">$@book.Price</p>
+                    </div>
+                </div>
+            }
+            <p class="mt-5 fs-4 me-5 fw-bold text-end">Total : $@books.Sum(bk => bk.Price)</p>
+        </div>
+    </div>
+</div>

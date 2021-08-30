@@ -1,0 +1,9 @@
+﻿@{
+    ViewBag.Title = "Best View Books";
+}
+<div class="col-8">
+    @await Component.InvokeAsync("ListViewBooks", new { isPaging = false, option = BookOptionEnum.Best })
+</div>
+@section scripts{
+    <script src="~/assets/js/reader/best_view.js"></script>
+}

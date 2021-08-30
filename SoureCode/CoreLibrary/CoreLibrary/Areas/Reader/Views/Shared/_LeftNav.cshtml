@@ -1,0 +1,42 @@
+﻿@inject CoreLibrary.Areas.Reader.Data.EBookContext _db
+@inject Microsoft.AspNetCore.Identity.UserManager<User> _userManager
+<div class="col-3">
+    <ul class="nav flex-column">
+        <li class="btn btn-secondary btn-lg w-100">Categories</li>
+        @foreach (var category in _db.Categories.ToList())
+        {
+            <li class="nav-item px-0 my-2 link-categories">
+                <a asp-action="CategoryDetail" asp-controller="Book" asp-route-id="@category.Id" class="text-decoration-none d-block text-dark">
+                    <span>@category.Name</span>
+                    <em class="float-end me-2">@category.Books.Count</em>
+                </a>
+            </li>
+        }
+
+
+        <!-- foreach here -->
+    </ul>
+    <hr class="my-2" />
+
+    <ul class="nav flex-column mt-3">
+        <li class="btn btn-secondary btn-lg w-100">Top authors</li>
+        @foreach (var author in _db.Users.ToList())
+        {
+            if (await _userManager.IsInRoleAsync(author, "Author"))
+            {
+                <li class="nav-item px-0 my-2 link-categories">
+                    <a asp-action="AuthorDetail" asp-controller="Home" asp-area="reader" asp-route-id="@author.Id" 
+                       class="text-decoration-none d-block text-dark">
+                        <span>@(author.LastName + " " + author.FirstName)</span>
+                        <em class="float-end me-2">@author.Books.Count</em>
+                    </a>
+                </li>
+            }
+
+        }
+
+
+        <!-- foreach here -->
+    </ul>
+    <hr class="my-2" />
+</div>

@@ -1,0 +1,47 @@
+﻿@model IEnumerable<Book>
+@inject CoreLibrary.Helper.Services.ServerUrlService _serverUrl
+@inject Microsoft.AspNetCore.Identity.SignInManager<User> _signInManager
+<div class="row mx-0 my-3">
+    <div class="col-8">
+        <h3>@ViewBag.Title <span class="text-muted fs-5">(8)</span></h3>
+    </div>
+    <div class="col-4">
+        <form>
+            <select class="form-select form-select-sm" aria-label=".form-select-sm example">
+                <option selected>How many books showed ? </option>
+                <option value="1">8</option>
+                <option value="2">12</option>
+                <option value="3">20</option>
+            </select>
+        </form>
+    </div>
+</div>
+
+<div class="row mx-0" id="container">
+    @foreach (var book in Model)
+    {
+        <div class="col-3">
+            <img src="@(_serverUrl.ThumbnailUrl(book.ThumbnailUrl))" class="w-100 p-2 height-thumbnail" />
+            <hr class="my-0" />
+            <p class="text-muted text-end">@book.Category.Name</p>
+            <div class="text-block-wrap height2line">
+                <a asp-action="Detail" asp-controller="Book" asp-area="reader" asp-route-id="@book.Id"
+                   class="text-decoration-none text-dark fw-bold d-block">@book.Name</a>
+            </div>
+
+            <p class="text-muted mb-0">
+                <span>By : </span>
+                <a href="#" class="text-success text-decoration-none">@(book.Author.LastName + " " + book.Author.FirstName)</a>
+            </p>
+            <p class="mb-2">
+                <i class="icofont-star fs-6 start-yellow"></i>
+                <i class="icofont-star fs-6 start-yellow"></i>
+                <i class="icofont-star fs-6 start-yellow"></i>
+                <i class="icofont-star fs-6 start-yellow"></i>
+                <i class="icofont-star fs-6"></i>
+            </p>
+            <a href="#" class="btn btn-warning">Rate</a>
+        </div>
+    }
+
+</div>

@@ -1,0 +1,95 @@
+﻿@model BookDetailModel
+@{
+    Layout = "_LayoutEmpty";
+    ViewBag.Title = "Detail";
+}
+
+<div class="ms-5 mb-4 fs-5">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Home" asp-area="reader">Home</a></li>
+            <li class="breadcrumb-item"><a asp-action="Manager" asp-controller="Author" asp-area="reader">Published Manager</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Detail</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="row mx-0 justify-content-center">
+    <div class="col-8">
+        <form class="row g-3" method="post" asp-action="Detail" asp-controller="Author" asp-route-id="@Model.Id">
+            @if (ViewBag.Success == true)
+            {
+                <div class="alert alert-success" role="alert">
+                    Successfully updated !
+                </div>
+            }
+            <div asp-validation-summary="ModelOnly"></div>
+            <div class="col-12">
+                <label asp-for="Name" class="form-label"></label>
+                <input class="form-control" asp-for="Name">
+                <span asp-validation-for="Name"></span>
+            </div>
+
+            <div class="col-4">
+                <label asp-for="LanguageId" class="form-label"></label>
+                <select class="form-select" asp-for="LanguageId" asp-items="@ViewBag.LanguageId"></select>
+                <span asp-validation-for="LanguageId"></span>
+            </div>
+
+            <div class="col-4">
+                <label asp-for="CategoryId" class="form-label">Category</label>
+                <select class="form-select" asp-for="CategoryId" asp-items="@ViewBag.CategoryId"></select>
+                <span asp-validation-for="CategoryId"></span>
+            </div>
+
+            <div class="col-4">
+                <label for="" class="form-label">Rate</label>
+                <p>
+                    <i class="icofont-star text-warning"></i>
+                    <i class="icofont-star"></i>
+                    <i class="icofont-star"></i>
+                    <i class="icofont-star"></i>
+                    <i class="icofont-star"></i>
+                </p>
+            </div>
+
+            <div class="col-3">
+                <label asp-for="Price" class="form-label"></label>
+                <input asp-for="Price" class="form-control">
+                <span asp-validation-for="Price"></span>
+            </div>
+
+            <div class="col-3">
+                <label asp-for="ReducePrice" class="form-label"></label>
+                <input asp-for="ReducePrice" class="form-control">
+                <span asp-validation-for="ReducePrice"></span>
+            </div>
+
+            <div class="col-3">
+                <label for="" class="form-label">Sold</label>
+                <input asp-for="Sold" class="form-control" readonly>
+            </div>
+
+            <div class="col-3">
+                <label for="" class="form-label">Sales</label>
+                <input asp-for="Sales" class="form-control" readonly>
+            </div>
+
+            <div class="col-12">
+                <label asp-for="AboutBook" class="form-label"></label>
+                <textarea class="form-control" rows="4" asp-for="AboutBook"></textarea>
+                <span asp-validation-for="AboutBook"></span>
+            </div>
+
+            <div class="col-12">
+                <label asp-for="Review" class="form-label"></label>
+                <textarea class="form-control" rows="4" asp-for="Review"></textarea>
+                <span asp-validation-for="Review"></span>
+            </div>
+
+            <div class="col-12">
+                <button type="submit" class="btn btn-success">Save</button>
+            </div>
+        </form>
+    </div>
+</div>

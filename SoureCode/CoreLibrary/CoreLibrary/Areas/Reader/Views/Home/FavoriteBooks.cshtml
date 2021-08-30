@@ -1,0 +1,9 @@
+﻿@{
+    ViewBag.Title = "Favorite Books";
+}
+<div class="col-8">
+    @await Component.InvokeAsync("ListViewBooks", new { isPaging = true, option = BookOptionEnum.Favorite, userId = ViewBag.userId })
+</div>
+@section scripts{
+    <script src="~/assets/js/reader/favorite_books.js"></script>
+}

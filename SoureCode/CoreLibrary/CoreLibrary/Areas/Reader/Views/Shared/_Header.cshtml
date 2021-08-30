@@ -1,0 +1,158 @@
+﻿@inject Microsoft.AspNetCore.Identity.SignInManager<User> _signInManager
+@inject Microsoft.AspNetCore.Identity.RoleManager<IdentityRole> _roleManager
+<header class="row container m-0 justify-content-between mt-4 mb-3">
+    <div class="col-4 d-flex justify-content-end">
+        <ul class="nav">
+            <li class="nav-item">
+                <a class="nav-link" aria-current="page" href="#">Contact</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" asp-action="About" asp-controller="Home" asp-area="reader">About us</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Help</a>
+            </li>
+        </ul>
+    </div>
+    <div class="col-4 d-flex justify-content-end">
+        <!-- Example split danger button -->
+        @{
+            if (_signInManager.IsSignedIn(User))
+            {
+                <div class="btn-group">
+                    <button type="button" class="btn btn-light px-3 text-success">Hi, @(User.FindFirst("LastName").Value + " " + User.FindFirst("FirstName").Value )</button>
+                    <button type="button" class="btn btn-light dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="visually-hidden">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        @if (User.IsInRole("Author"))
+                        {
+                            <li><a class="dropdown-item" asp-action="Manager" asp-controller="Author" asp-area="reader"><i class="icofont-library me-3"></i>Publish manager</a></li>
+                        }
+                        <li><a class="dropdown-item" href="#"><i class="icofont-lightning-ray me-3"></i>Logo</a></li>
+                        <li><a class="dropdown-item" asp-action="UserProfile" asp-controller="Home" asp-area="reader"><i class="icofont-user-male me-3"></i>Individual</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="icofont-warning me-3"></i>Feedback</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" asp-action="SignOut" asp-controller="Logging" asp-area="reader"><i class="icofont-sign-out me-3"></i>Sign out</a></li>
+                    </ul>
+                </div>
+            }
+            else
+            {
+                <a asp-action="Index" asp-controller="Logging" asp-area="reader" asp-route-ReturnUrl="@Context.Request.Path"
+                   type="button" class="btn btn-outline-light px-3 text-success me-3">Sign In</a>
+
+                <a asp-action="SignUp" asp-controller="Logging" asp-area="reader" asp-route-ReturnUrl="@Context.Request.Path"
+                   type="button" class="btn btn-outline-light px-3 text-success">Sign Up</a>
+            }
+        }
+    </div>
+</header>
+
+<hr />
+
+<div class="container row mx-0 justify-content-between mt-5 mb-3 align-items-center">
+    <div class="col-2">
+        <img src="~/assets/img/other/logo-library.png" class="w-75" />
+    </div>
+    <div class="col-6 row m-0">
+        <form method="get" asp-action="SearchBook" asp-controller="Home">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search by Title, Author, Keyword, ..." 
+                       aria-describedby="search-layout" name="keywork" id="keywork">
+                <button type="submit" class="input-group-text" id="search-layout"><i class="icofont-search-2"></i></button>
+            </div>
+        </form>
+    </div>
+    <div class="col-3">
+        @{
+            if (_signInManager.IsSignedIn(User))
+            {
+                <ul class="nav">
+                    @if (User.IsInRole("Author"))
+                    {
+                        <li class="nav-item me-2 position-relative">
+                            <a asp-action="Create" asp-controller="Book" asp-area="reader" class="text-decoration-none"><i class="icofont-cloud-upload fs-1"></i></a>
+                        </li>
+                    }
+                    @{
+                        else if (User.IsInRole("Reader"))
+                        {
+                            <li class="nav-item me-2 position-relative">
+                                <a class="text-decoration-none text-info" aria-current="page"
+                                   href="#" data-bs-toggle="modal" data-bs-target="#static-upload-book">
+                                    <i class="icofont-cloud-upload fs-1"></i>
+                                </a>
+                            </li>
+                        }
+                    }
+
+
+                    <li class="nav-item position-relative me-2">
+                        <a class="text-decoration-none text-danger" asp-action="FavoriteBooks" asp-controller="Home" asp-area="reader"><i class="icofont-heart fs-1"></i></a>
+                        <span class="position-absolute top-0 start-50 translate-middle badge rounded-pill bg-danger">
+                            12
+                            <span class="visually-hidden">unread messages</span>
+                        </span>
+                    </li>
+                    <li class="nav-item position-relative me-2">
+                        <a class="text-decoration-none text-info" asp-action="Respo" asp-controller="Home">
+                            <i class="icofont-ui-folder fs-1 text-warning"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item position-relative">
+                        <a class="text-decoration-none text-danger" asp-action="Index" asp-controller="Basket" asp-area="reader"><i class="icofont-basket fs-1 text-secondary"></i></a>
+                        <span class="position-absolute top-0 start-50 translate-middle badge rounded-pill bg-danger">
+                            @ViewBag.Basket
+                            <span class="visually-hidden">unread messages</span>
+                        </span>
+                    </li>
+                </ul>
+            }
+        }
+
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="static-upload-book" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="static-upload-label" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="static-upload-label">Upload your book</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h5 class="text-success">Sorry, You can not upload book</h5>
+                <hr />
+                <h6 class="text-muted">Please register as an author to be able to upload your book in <a asp-action="RegisterAuthor"
+                                                                                                         asp-controller="Home"
+                                                                                                         asp-area="reader">here</a></h6>
+            </div>
+            <div class="modal-footer">
+                <p>I'm glad you share your book 🤩</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="mb-4">
+    <ul class="nav bg-light justify-content-center">
+        <li class="nav-item px-2">
+            <a class="nav-link menu-item" aria-current="page" asp-action="Index" asp-controller="Home" asp-area="reader">Home</a>
+        </li>
+        <li class="nav-item px-2">
+            <a class="nav-link menu-item" asp-action="BestView" asp-controller="Home" asp-area="reader">Best View</a>
+        </li>
+        <li class="nav-item px-2">
+            <a class="nav-link menu-item" asp-action="Authors" asp-controller="Home" asp-area="reader">Authors</a>
+        </li>
+        <li class="nav-item px-2">
+            <a class="nav-link menu-item" asp-action="LatestBooks" asp-controller="Home" asp-area="reader">Latest Books</a>
+        </li>
+        <li class="nav-item px-2">
+            <a class="nav-link menu-item" asp-action="AdvancedSearch" asp-controller="Home" asp-area="reader">Advanced Search</a>
+        </li>
+    </ul>
+</div>

@@ -1,0 +1,29 @@
+﻿@{
+    ViewBag.Title = "Sign in";
+}
+@model SignInModel
+<div class="row mx-0 justify-content-center">
+    <div class="col-3 mt-5 p-5 shadow-lg border border-1">
+        <h2 class="mb-5 text-center fw-bold text-success">Welcome to E-Library</h2>
+        <form method="post">
+            <div class="text-danger ms-2">@ViewBag.Message</div>
+            <div class="form-floating mb-3">
+                <input class="form-control" asp-for="Email">
+                <label asp-for="Email"></label>
+                <span class="text-danger" asp-validation-for="Email"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input class="form-control" asp-for="Password">
+                <label asp-for="Password"></label>
+                <span class="text-danger" asp-validation-for="Password"></span>
+            </div>
+            <div class="form-check mb-3">
+                <input class="form-check-input" asp-for="IsRemember">
+                <label class="form-check-label" asp-for="IsRemember"></label>
+            </div>
+            <p>Forget password click <a asp-action="Forget" asp-controller="Logging" asp-area="reader">here</a> to reset</p>
+            <p>Don't have account. Click <a asp-action="SignUp" asp-controller="Logging" asp-area="reader">here</a> to sign up</p>
+            <button type="submit" class="btn btn-primary">Sign in</button>
+        </form>
+    </div>
+</div>

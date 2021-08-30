@@ -1,0 +1,248 @@
+
+
+/* List 1 */
+    .list_1 {
+        display: block;
+        background-color: white;
+        border: none;
+        
+    }
+    
+    .list_1::before {
+        content: "";
+        width: 14px;
+        height: 14px;
+        position: absolute;
+        bottom: -7px;
+        transform: rotate(45deg);
+        left: 20px;
+    }
+    
+    
+     .item_1 a {
+        display: block;
+        position: relative;
+        color: black;
+        background: white;
+        border: none;
+    }
+    
+    
+    .item_1 a::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;  
+        background: #00BCD4;
+        opacity: 0;
+        transition: 2s;
+    }
+    
+    .item_1 {
+        background: white;
+        overflow: hidden;
+        max-height: 0;
+        transition: 1s;
+    }
+    
+    .item_1 a:hover::before {
+        opacity: 1;
+        
+    }
+    .item_1 a:hover {
+        background-color: rgb(178, 232, 189);
+    }
+    
+    .list_item_1:target .item_1 {
+        max-height: 20em;
+    } 
+    .list_item_1{
+        font-size: 0,1em;
+    }
+
+   
+    /* List 2 */
+    .list_2 {
+        display: block;
+        border: none;
+        color: black;
+        background-color: white;
+    }
+
+    /* .list_2::before {
+        content: "";
+        width: 14px;
+        height: 14px;
+        position: absolute;
+        bottom: -7px;
+        transform: rotate(45deg);
+        left: 20px;
+        background-color: white;
+    }
+     */
+    
+    .item_2 a {
+        display: block;
+        border: none;
+        position: relative;
+        color: black;
+        background: white;
+        
+    }
+    
+    .item_2 a::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;  
+        background: #00BCD4;
+        opacity: 0;
+        transition: 2s;
+    }
+    
+    .item_2 {
+        background: white;
+        overflow: hidden;
+        max-height: 0;
+        transition: 1s;
+    }
+
+    .item_2 a:hover::before {
+        opacity: 1;
+    }
+    .item_2 a:hover {
+        background-color: rgb(178, 232, 189);
+    }
+    
+    .list_item_2:target .item_2 {
+        max-height: 20em;
+    }
+
+    
+   /* List 3 */
+    
+    .list_3 {
+        display: block;  
+        border: none;     
+        color: black;
+        background-color: white;
+    }
+    
+    /* .list_3::before {
+        content: "";
+        width: 14px;
+        height: 14px;
+        position: absolute;
+        bottom: -7px;
+        transform: rotate(45deg);
+        left: 20px;
+        background-color: white;
+    } */
+    
+    
+    .item_3 a {
+        display: block;
+        border: none;
+        position: relative;
+        color: black;
+        
+        background: white;
+        
+    }
+    
+    .item_3 a::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;  
+        background: #00BCD4;
+        opacity: 0;
+        transition: 2s;
+    }
+    
+    .item_3 {
+        background: white;
+        overflow: hidden;
+        max-height: 0;
+        transition: 1s;
+    }
+    
+    .item_3 a:hover::before {
+        opacity: 1;
+    }
+    .item_3 a:hover {
+        background-color: rgb(178, 232, 189);
+    }
+
+    .item{
+        max-height: 10em;
+    }
+
+
+    /* CLOCK */
+.clock{
+    color:white;
+    font-family: 'Open Sans',sans-serif;
+    position:absolute;
+    bottom:4rem;
+    right:5rem;
+    width: 17rem;
+}
+
+.clock .timere div{
+    position: relative;
+    margin: 0 0.4rem;
+    display: inline-block;
+    -webkit-box-reflect: below 1px linear-gradient(transparent,#0004);
+    
+}
+.clock .time div span{
+    position: relative;
+    display: inline;
+    padding-top:2px;
+    width: 4.25rem;
+    height: 3rem;
+    background-color: hsla(135, 98%, 32%, 0.75);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2em;
+    z-index: 10;
+    margin-bottom: 1px;
+    border:none;
+}
+.clock .time div span:nth-child(2)
+{
+    height: 1.9rem;
+    width: 4.25rem;
+    font-size: 0.6em;
+    letter-spacing: 0.2em;
+    font-weight: 500;
+    z-index: 9;
+    box-shadow: none;
+    background-color: hsla(135, 98%, 32%, 0.75);
+    text-transform: uppercase;
+    border: none;
+}
+.clock .time div:nth-last-child(2) span{
+    background:  hsla(135, 100%, 41%, 0.75);
+}
+.clock .time div:nth-lats-child(2) span:nth-child(2){
+    background-color: hsla(135, 98%, 32%, 0.75);
+}
+.clock .time div:nth-last-child(1) span{
+    position:absolute;
+    bottom:1.1rem;   
+    width: 3rem;
+    height: 2rem;
+    font-size: 1.2rem;
+    background-color: hsla(135, 98%, 32%, 0.75);
+    -webkit-box-reflect: below 1px linear-gradient(transparent,#0004);
+}
+.today{
+    font-size:1.5rem;
+    font-size: 'Open Sans',sans-serif;
+}

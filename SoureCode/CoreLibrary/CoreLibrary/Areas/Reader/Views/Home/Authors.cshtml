@@ -1,0 +1,48 @@
+﻿@model IEnumerable<User>
+@inject CoreLibrary.Helper.Services.ServerUrlService _serverUrl
+@{
+    ViewBag.Title = "Authors";
+}
+<div class="col-8 row align-self-start d-flex">
+    <h5>People's choice</h5>
+    <h3>Most popular authors</h3>
+    <hr />
+
+    <!-- Chạy foreach ở đây -->
+    @foreach (var author in Model)
+    {
+        <div class="col-3 text-center">
+            <a asp-action="AuthorDetail" asp-route-id="@author.Id" class="d-block">
+                @*<img src="~/assets/img/other/author-demo.jpg" class="img-thumbnail w-100" />*@
+                <img src="@(_serverUrl.AvatarUrl(author.Avatar))" class="img-thumbnail w-100 h-100" />
+            </a>
+            <p class="fw-bold mb-0"><a asp-action="AuthorDetail" asp-route-id="@author.Id" class="text-decoration-none text-dark">@(author.LastName + " " + author.FirstName)</a></p>
+            <small class="text-muted">@author.Books.Count published books</small>
+        </div>
+    }
+    <!-- Hết vòng lặp for -->
+
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+</div>
+
+@section scripts{
+    <script src="~/assets/js/reader/author.js"></script>
+}

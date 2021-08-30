@@ -1,0 +1,30 @@
+﻿body {
+    font-family: 'Barlow Semi Condensed', sans-serif;
+}
+.link-categories > a:hover {
+    color: #77b748 !important;
+}
+.start-yellow {
+    color: #ffc107 !important;
+}
+.nav-item .menu-item.active {
+    background-color: #198754;
+    color: white;
+    font-weight: bold;
+}
+.text-block-wrap {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+.height2line {
+    height: calc(var(--line-height) * 2em);
+    line-height: var(--line-height);
+    --line-height: 1.1;
+}
+.wrap-break-word {
+    word-wrap: break-word;
+    text-align:justify;
+}

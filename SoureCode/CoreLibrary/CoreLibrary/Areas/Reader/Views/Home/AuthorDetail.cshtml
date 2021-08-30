@@ -1,0 +1,92 @@
+﻿@model User
+@inject CoreLibrary.Helper.Services.ServerUrlService _serverUrl
+@{
+    ViewBag.Title = "Author Detail";
+    Layout = "_LayoutEmpty";
+}
+
+<div class="row mx-0 justify-content-center">
+    <div class="col-8">
+        <div class="my-3 fs-5 p-2 my-0">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Home" asp-area="reader">Home</a></li>
+                    <li class="breadcrumb-item"><a asp-action="Authors" asp-controller="Home" asp-area="reader">Authors</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Author Profile</li>
+                </ol>
+            </nav>
+        </div>
+
+        <div class="row mx-0 justify-content-between">
+            <div class="col-3">
+                <div class="mb-3 bg-light p-2 text-center">
+                    <img src="@(_serverUrl.AvatarUrl(Model.Avatar))" class="rounded-circle" />
+                </div>
+
+                <div class="">
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <span class="float-start"><i class="icofont-facebook text-primary"></i> Facebook</span>
+                            <a class="float-end text-primary text-decoration-none" href="#">visit</a>
+                        </li>
+                        <li class="list-group-item">
+                            <span class="float-start"><i class="icofont-instagram text-danger"></i> Instagram</span>
+                            <a class="float-end text-primary text-decoration-none" href="#">visit</a>
+                        </li>
+                        <li class="list-group-item">
+                            <span class="float-start"><i class="icofont-twitter text-primary"></i> Instagram</span>
+                            <a class="float-end text-primary text-decoration-none" href="#">visit</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-8 row mx-0 justify-content-between">
+                <div class="shadow-sm mb-3 col-12 p-0">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item list-group-item-light">
+                            <span class="w-25 d-inline-block fw-bold">Full Name</span>
+                            <span class="text-muted">@(Model.LastName + " " + Model.FirstName)</span>
+                        </li>
+                        <li class="list-group-item list-group-item-light">
+                            <span class="w-25 d-inline-block fw-bold">Email</span>
+                            <span class="text-muted">@Model.Email</span>
+                        </li>
+                        <li class="list-group-item list-group-item-light">
+                            <span class="w-25 d-inline-block fw-bold">Role</span>
+                            <span class="text-muted">Author</span>
+                        </li>
+                        <li class="list-group-item list-group-item-light">
+                            <span class="w-25 d-inline-block fw-bold">Country</span>
+                            <span class="text-muted">@Model.Country.Name</span>
+                        </li>
+                        <li class="list-group-item list-group-item-light">
+                            <span class="w-25 d-inline-block fw-bold">Phone</span>
+                            <span class="text-muted">@Model.PhoneNumber</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-5 my-2 p-0">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item list-group-item-success">
+                            <strong>Author</strong>
+                        </li>
+                        <li class="list-group-item list-group-item-info">
+                            <span class="w-75 d-inline-block fw-bold">Published</span>
+                            <span class="text-muted">@Model.Books.Count</span>
+                        </li>
+                        <li class="list-group-item list-group-item-info">
+                            <span class="w-75 d-inline-block fw-bold">Sold</span>
+                            <span class="text-muted">50</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div>
+                @*<vc:list-view-books is-paging="true"></vc:list-view-books>*@
+            </div>
+
+        </div>
+    </div>
+</div>

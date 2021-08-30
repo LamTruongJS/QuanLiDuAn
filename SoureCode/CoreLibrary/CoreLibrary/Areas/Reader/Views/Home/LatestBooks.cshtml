@@ -1,0 +1,10 @@
+﻿@{
+    ViewBag.Title = "Latest Books";
+}
+<div class="col-8">
+    @*<vc:list-view-books is-paging="false" book=""></vc:list-view-books>*@
+    @await Component.InvokeAsync("ListViewBooks", new { isPaging = false, option = BookOptionEnum.Latest })
+</div>
+@section scripts{
+    <script src="~/assets/js/reader/latest_books.js"></script>
+}

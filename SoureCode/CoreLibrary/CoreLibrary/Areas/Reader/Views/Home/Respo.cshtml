@@ -1,0 +1,46 @@
+﻿@model IEnumerable<Book>
+@inject CoreLibrary.Helper.Services.ServerUrlService _serverUrl
+@{
+    ViewBag.Title = "Purchased";
+    Layout = "_LayoutEmpty";
+}
+
+<div class="my-3 fs-5 ms-5 p-2 my-0">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Home" asp-area="reader">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Purchased Books</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="row mx-0 justify-content-center" id="container">
+    <div class="col-8 row mx-0">
+        @foreach (var book in Model)
+        {
+            <div class="col-3 px-3">
+                <img src="@(_serverUrl.ThumbnailUrl(book.ThumbnailUrl))" class="w-100 p-2 height-thumbnail" />
+                <hr class="my-0" />
+                <p class="text-muted text-end">@book.Category.Name</p>
+                <div class="text-block-wrap height2line">
+                    <a href="@(_serverUrl.BookPdfUrl(book.PdfUrl))" target="_blank"
+                       class="text-decoration-none text-dark fw-bold d-block">@book.Name</a>
+                </div>
+
+                <p class="text-muted mb-0">
+                    <span>By : </span>
+                    <a href="#" class="text-success text-decoration-none">@(book.Author.LastName + " " + book.Author.FirstName)</a>
+                </p>
+                <p class="mb-2">
+                    <i class="icofont-star fs-6 start-yellow"></i>
+                    <i class="icofont-star fs-6 start-yellow"></i>
+                    <i class="icofont-star fs-6 start-yellow"></i>
+                    <i class="icofont-star fs-6 start-yellow"></i>
+                    <i class="icofont-star fs-6"></i>
+                </p>
+                <a asp-action="Rating" asp-route-id="@book.Id" class="btn btn-warning">Rate</a>
+            </div>
+        }
+
+    </div>
+</div>

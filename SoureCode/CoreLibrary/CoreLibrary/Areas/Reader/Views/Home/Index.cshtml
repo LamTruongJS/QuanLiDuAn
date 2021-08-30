@@ -1,0 +1,113 @@
+﻿@inject CoreLibrary.Helper.Services.ServerUrlService _serverUrl
+@inject Microsoft.AspNetCore.Identity.SignInManager<User> _signInManager
+@inject CoreLibrary.Areas.Reader.Data.EBookContext _db
+@model Book 
+@{
+    ViewBag.Title = "Home";
+}
+
+<!-- Content Right -->
+<div class="col-8">
+    <!-- Best View -->
+    <h5>People's choice</h5>
+    <h3>Best view of book</h3>
+    <hr />
+    <div class="row mx-0 bg-light p-3">
+        <a class="col-4 d-block" href="#">
+            <img src="@(_serverUrl.ThumbnailUrl(Model.ThumbnailUrl))" class="w-100" />
+        </a>
+        <div class="col-6">
+            <h2 class="mt-3">
+                <a asp-action="Detail" asp-controller="Book" asp-route-id="@Model.Id"
+                   class="text-decoration-none fw-bold">@Model.Name</a>
+            </h2>
+            <p>
+                @{
+                    int n = 0;
+                    int star = 0;
+                    foreach (var i in Model.Interactions)
+                    {
+                        if (i.Evaluation != 0)
+                        {
+                            star = star + i.Evaluation;
+                            n = n + 1;
+                        }
+                    }
+                    if (n != 0)
+                    {
+                        for (int i = 1; i <= 5; i++)
+                        {
+                            if (i <= star)
+                            {
+                                <i class="icofont-star fs-6 start-yellow"></i>
+                            }
+                            else
+                            {
+                                <i class="icofont-star fs-6"></i>
+                            }
+                        }
+                        <span>(@n)</span>
+                    }
+                    else
+                    {
+                        <i class="icofont-star fs-6"></i>
+                        <i class="icofont-star fs-6"></i>
+                        <i class="icofont-star fs-6"></i>
+                        <i class="icofont-star fs-6"></i>
+                        <i class="icofont-star fs-6"></i>
+                        <span>(@n)</span>
+                    }
+                }
+            </p>
+            <p class="text-muted">
+                <span>By : </span><a href="#"
+                                     class="text-success text-decoration-none fw-bold fs-3">@(Model.Author.LastName + " " + Model.Author.FirstName)</a>
+            </p>
+            <div class="row mx-0 mb-2">
+                <div class="col">
+                    <strong class="text-dark fs-3">$@Model.Price</strong>
+                </div>
+                @if (Model.ReducedPrice >= 0)
+                {
+                    <div class="col">
+                        <del class="text-muted fs-4">$@Model.ReducedPrice</del>
+                    </div>
+                }
+
+
+            </div>
+            @{
+                if (_signInManager.IsSignedIn(User))
+                {
+                    string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                    var basket = _db.Baskets.Where(bk => bk.BookId == Model.Id && bk.UserId == userId).FirstOrDefault();
+                    if (basket != null)
+                    {
+                        <button class="btn btn-primary btn-sm me-3">Read now</button>
+                    }
+                    else
+                    {
+                        <a asp-action="Index" asp-controller="Payment" asp-route-id="@Model.Id" class="btn btn-outline-success btn-sm me-3">Buy Now</a>
+                    }
+                }
+                else
+                {
+                      <a asp-action="Index" asp-controller="Payment" asp-route-id="@Model.Id" class="btn btn-outline-success btn-sm me-3">Buy Now</a>
+                }
+             }
+
+        </div>
+    </div>
+    <!-- End Best View -->
+
+    <hr />
+
+    <!-- Trending -->
+    @await Component.InvokeAsync("ListViewBooks", new { isPaging = false, option = BookOptionEnum.Latest })
+    <!--End Trending-->
+
+</div>
+<!-- End Content Right -->
+@section scripts{
+    <script src="~/assets/js/reader/home.js"></script>
+}

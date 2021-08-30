@@ -1,0 +1,81 @@
+﻿@model Book
+@inject CoreLibrary.Helper.Services.ServerUrlService _serverUrl
+@{
+    ViewBag.Title = "Rating";
+    Layout = "_LayoutEmpty";
+    int star = Model.Interactions.Where(it => it.UserId == ViewBag.UID).Select(it => it.Evaluation).FirstOrDefault();
+}
+
+<div class="my-3 fs-5 ms-5 p-2 my-0">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Home" asp-area="reader">Home</a></li>
+            <li class="breadcrumb-item"><a asp-action="Respo" asp-controller="Home" asp-area="reader">Purchased Books</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Rating</li>
+        </ol>
+    </nav>
+</div>
+
+@if (ViewBag.Success == true)
+{
+    <div class="alert alert-success" role="alert">
+        Successful evaluation !!
+    </div>
+}
+
+<div class="row mx-0 justify-content-center" id="container">
+    <div class="d-flex row mx-0 col-2 ">
+        <div class="px-3">
+            <img src="@(_serverUrl.ThumbnailUrl(Model.ThumbnailUrl))" class="w-100 p-2 height-thumbnail" />
+            <hr class="my-0" />
+            <p class="text-muted text-end">@Model.Category.Name</p>
+            <div class="text-block-wrap height2line">
+                <a href="@(_serverUrl.BookPdfUrl(Model.PdfUrl))" target="_blank"
+                   class="text-decoration-none text-dark fw-bold d-block">@Model.Name</a>
+            </div>
+
+            <p class="text-muted mb-0">
+                <span>By : </span>
+                <a href="#" class="text-success text-decoration-none">@(Model.Author.LastName + " " + Model.Author.FirstName)</a>
+            </p>
+        </div>
+    </div>
+    <div class="col-4">
+        <form method="post" asp-action="Rating" asp-controller="Home">
+            <input name="userId" value="@ViewBag.UID" type="hidden" />
+            <input name="bookId" value="@Model.Id" type="hidden" />
+            @{
+                for (int i = 1; i <= 5; i++)
+                {
+                    <div class="form-check">
+                        @{
+                            if (star == i)
+                            {
+                                <input class="form-check-input" type="radio" name="star" value="@i" checked>
+                            }
+                            else
+                            {
+                                <input class="form-check-input" type="radio" name="star" value="@i">
+                            }
+                        }
+                        @{
+                            for (int j = 1; j <= 5; j++)
+                            {
+                                if (i >= j)
+                                {
+                                    <i class="icofont-star fs-6 start-yellow"></i>
+                                }
+                                else
+                                {
+                                    <i class="icofont-star fs-6"></i>
+                                }
+
+                            }
+                        }
+                    </div>
+                }
+            }
+            <button type="submit" class="my-3 btn btn-warning">Rate</button>
+        </form>
+    </div>
+</div>

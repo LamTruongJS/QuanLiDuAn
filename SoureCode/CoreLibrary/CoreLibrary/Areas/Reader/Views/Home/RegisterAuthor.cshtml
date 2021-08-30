@@ -1,0 +1,38 @@
+﻿@model RegisterAuthorModel
+@{
+    ViewBag.Title = "Register Author";
+    Layout = "_LayoutEmpty";
+}
+
+<div class="my-3 ms-5 fs-5 p-2 my-0">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-action="Home" asp-controller="Home" asp-area="reader">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Register To Author</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="row justify-content-center mx-0">
+    <form class="row col-8 g-3" method="post" asp-action="RegisterAuthor">
+        <div asp-validation-summary="ModelOnly"></div>
+        <div class="col-md-6">
+            <label asp-for="BackupEmail" class="form-label"></label>
+            <input class="form-control" asp-for="BackupEmail" >
+            <span asp-validation-for="BackupEmail" class="text-danger"></span>
+        </div>
+        <div class="col-md-6">
+            <label asp-for="Phone" class="form-label"></label>
+            <input class="form-control" asp-for="Phone">
+            <span asp-validation-for="Phone" class="text-danger"></span>
+        </div>
+        <div class="col-12">
+            <label asp-for="AboutAuthor" class="form-label"></label>
+            <textarea class="form-control" asp-for="AboutAuthor"></textarea>
+            <span asp-validation-for="AboutAuthor" class="text-danger"></span>
+        </div>
+        <div class="col-12">
+            <button type="submit" class="btn btn-success">Register Now</button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,128 @@
+﻿@inject CoreLibrary.Helper.Services.ServerUrlService _serverUrl
+@inject Microsoft.AspNetCore.Identity.SignInManager<User> _signInManager
+@inject CoreLibrary.Areas.Reader.Data.EBookContext _db
+@model Book
+@{
+    ViewBag.Title = "Book Detail";
+}
+<div class="col-8 row mx-0 justify-content-between">
+    <div class="col-4">
+        <img src="@(_serverUrl.ThumbnailUrl(Model.ThumbnailUrl))" class="w-100" />
+    </div>
+    <div class="col-7">
+        <h3>@Model.Name</h3>
+        <p>
+            <i class="icofont-star fs-4 start-yellow"></i>
+            <i class="icofont-star fs-4 start-yellow"></i>
+            <i class="icofont-star fs-4 start-yellow"></i>
+            <i class="icofont-star fs-4 start-yellow"></i>
+            <i class="icofont-star fs-4"></i>
+        </p>
+        <p class="text-muted">
+            <span>By : </span>
+            <a href="#" class="text-success text-decoration-none fw-bold fs-3">@(Model.Author.LastName + " " + Model.Author.FirstName)</a>
+        </p>
+        <div class="row mx-0 mb-2">
+            <div class="col">
+                <strong class="text-dark fs-3">@Model.Price</strong>
+            </div>
+            @if (Model.ReducedPrice >= 0)
+            {
+                <div class="col">
+                    <del class="text-muted fs-4">@Model.ReducedPrice</del>
+                </div>
+            }
+        </div>
+        @{
+            if (_signInManager.IsSignedIn(User))
+            {
+                string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                var basket = _db.Baskets.Where(bk => bk.BookId == Model.Id && bk.UserId == userId).FirstOrDefault();
+                if (basket != null)
+                {
+                    <button class="btn btn-primary btn-sm me-3">Read now</button>
+                }
+                else
+                {
+                    <a asp-action="Index" asp-controller="Payment" asp-route-id="@Model.Id" class="btn btn-outline-success btn-sm me-3">Buy Now</a>
+                }
+            }
+            else
+            {
+                <a asp-action="Index" asp-controller="Payment" asp-route-id="@Model.Id" class="btn btn-outline-success btn-sm me-3">Buy Now</a>
+            }
+        }
+        @{
+            if (_signInManager.IsSignedIn(User))
+            {
+                string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                bool isHeart = Model.Interactions.Where(it => it.BookId == Model.Id && it.UserId == userId).Select(it => it.IsLove).FirstOrDefault();
+                if (isHeart)
+                {
+                    <a asp-action="ToggleFavorite" asp-route-id="@Model.Id" data-ajax="true" data-ajax-success="success" data-ajax-method="post"
+                       class="btn btn-outline-danger btn-sm" id="heart"><i class="icofont-heart"></i></a>
+                }
+                else
+                {
+                    <a asp-action="ToggleFavorite" asp-route-id="@Model.Id" data-ajax="true" data-ajax-success="success" data-ajax-method="post"
+                       class="btn btn-outline-secondary btn-sm" id="heart"><i class="icofont-heart"></i></a>
+                }
+            }
+        }
+        <ul class="nav nav-tabs mt-5 tab-about">
+            <li class="nav-item bg-light">
+                <a class="nav-link link-success active" data-transform="#about-book" aria-current="page" href="#">About this book</a>
+            </li>
+            <li class="nav-item bg-light">
+                <a class="nav-link link-success" data-transform="#about-authors" href="#">About the authors</a>
+            </li>
+            <li class="nav-item bg-light">
+                <a class="nav-link link-success" data-transform="#reviews" href="#">Reviews</a>
+            </li>
+        </ul>
+
+        <div class="p-3">
+            <p class="text-muted detail wrap-break-word" id="about-book">@Model.AboutBook</p>
+            <p class="text-muted detail wrap-break-word d-none" id="about-authors">@Model.Author.AboutAuthor</p>
+            <p class="text-muted detail wrap-break-word d-none" id="reviews">@Model.Review</p>
+        </div>
+
+    </div>
+
+
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('.tab-about > li').click(function (e) {
+                e.preventDefault();
+                $('.tab-about li a').removeClass('active');
+                $('.detail').addClass('d-none');
+                $(e.target).addClass('active');
+                console.log($(e.target));
+                let selector = $(e.target).attr('data-transform');
+                $(selector).removeClass('d-none');
+            });
+        });
+        var success = function (data) {
+            var heart = document.getElementById('heart');
+            if (data == 'ADD' || data == 'REMOVE') {
+                if (heart.classList.contains('btn-outline-secondary')) {
+                    heart.classList.remove('btn-outline-secondary');
+                    heart.classList.add('btn-outline-danger');
+                    alert('Added to favorite books');
+                }
+                else {
+                    heart.classList.remove('btn-outline-danger');
+                    heart.classList.add('btn-outline-secondary');
+                    alert('Removed to favorite books');
+                }
+            }
+            else {
+                alert('Error! An error occurred. Please try again later');
+            }
+        };
+    </script>
+
+}

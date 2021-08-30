@@ -1,0 +1,30 @@
+﻿<nav class="col-md-3">
+    <div class="list-group bg-light">
+        <div class="list_item_1" id="A">
+            <a href="#A" class="list-group-item list-group-item-action active list_1 bg-white text-muted" aria-current="true">Manager Books</a>
+            <div class="item_1">
+                <a asp-action="Books" asp-controller="Book" class="list-group-item list-group-item-action text-muted">&emsp;&emsp;Books</a>
+                <a asp-action="Authors" asp-controller="Book" class="list-group-item list-group-item-action text-muted">&emsp;&emsp;Author</a>
+            </div>
+        </div>
+        <div class="list_item_2" id="B">
+            <a href="#B" class="list-group-item list-group-item-action active list_2 bg-white text-muted">Accounts</a>
+            <div class="item_2">
+                <a asp-action="Readers" asp-controller="Account" class="list-group-item list-group-item-action text-muted">&emsp;&emsp;Readers</a>
+                <a asp-action="Admins" asp-controller="Account" class="list-group-item list-group-item-action text-muted">&emsp;&emsp;Admins</a>
+                <a asp-action="Authors" asp-controller="Account" class="list-group-item list-group-item-action text-muted">&emsp;&emsp;Authors</a>
+                <a asp-action="Blocked" asp-controller="Account" class="list-group-item list-group-item-action text-muted  ">&emsp;&emsp;Block Accounts</a>
+            </div>
+        </div>
+        <div class="list_item_3" id="C">
+            <a href="#C" class="list-group-item list-group-item-action active list_3 bg-white text-muted" aria-current="true">
+                Statistical
+            </a>
+            <div class="item_3">
+                <a asp-action="Views" asp-controller="Statistical" class="list-group-item list-group-item-action text-muted">&emsp;&emsp;Views</a>
+                <a asp-action="Books" asp-controller="Statistical" class="list-group-item list-group-item-action text-muted">&emsp;&emsp;Books</a>
+                <a asp-action="Turnover" asp-controller="Statistical" class="list-group-item list-group-item-action text-muted">&emsp;&emsp;Turnover</a>
+            </div>
+        </div>
+    </div>
+</nav>

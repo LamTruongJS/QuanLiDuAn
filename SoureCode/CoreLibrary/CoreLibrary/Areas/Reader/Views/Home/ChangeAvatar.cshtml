@@ -1,0 +1,85 @@
+﻿@model User
+@inject CoreLibrary.Helper.Services.ServerUrlService _serverUrl
+@{
+    ViewBag.Title = "Change Avatar";
+    Layout = "_LayoutEmpty";
+}
+@section styles{
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.4/croppie.min.css" rel="stylesheet">
+}
+
+<div class="my-3 ms-5 fs-5 p-2 my-0">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Home" asp-area="reader">Home</a></li>
+            <li class="breadcrumb-item"><a asp-action="UserProfile" asp-controller="Home" asp-area="reader">Profile</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Change Avatar</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-7 text-center row justify-content-center">
+        <div id="container" style="width:220px; height:220px; background-color:gray; text-align:center">
+        </div>
+        <div class="mt-5 text-left">
+            <input type="file" placeholder="Thay đổi ảnh" id="croppie-input" accept="image/*" />
+        </div>
+        <div class="my-3">
+            <button class="btn btn-lg btn-success" id="submit-image">Save</button>
+        </div>
+    </div>
+
+</div>
+
+@section scripts{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.4/croppie.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var changeImg = false;
+            var croppieDemo = $('#container').croppie({
+                enableOrientation: true,
+                viewport: {
+                    width: 170,
+                    height: 170,
+                    type: 'square' // or 'circle'
+                },
+            });
+            croppieDemo.croppie('bind', {
+                url: '@(_serverUrl.AvatarUrl(Model.Avatar))'
+            });
+            $('#croppie-input').on('change', function () {
+                var reader = new FileReader();
+                changeImg = true;
+                reader.onload = function (e) {
+                    croppieDemo.croppie('bind', {
+                        url: e.target.result
+                    });
+                }
+                reader.readAsDataURL(this.files[0]);
+            });
+            $('#submit-image').on('click', function (ev) {
+                ev.preventDefault();
+                console.log('g');
+                croppieDemo.croppie('result', {
+                    type: 'base64',
+                    size: 'viewport',
+                    format: 'jpeg'
+                }).then(function (image) {
+
+                    if (changeImg) {
+                        console.log('h');
+                        var formData = new FormData();
+
+                        // name , ima_base64
+                        formData.append('avatar', image);
+                        var request = new XMLHttpRequest();
+                        request.open("POST", "/reader/user-profile/change-avatar");
+                        request.send(formData);
+                        window.location.href = "/reader/user-profile";
+                    }
+                });
+            });
+        });
+    </script>
+}

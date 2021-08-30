@@ -1,0 +1,53 @@
+﻿@model AdvancedSearchModel 
+@{
+    ViewBag.Title = "Advanced Search";
+}
+<div class="col-8">
+    <form method="post" asp-action="AdvancedSearch" asp-controller="Home">
+        <div class="row g-2">
+            <div class="col-md">
+                <div class="form-floating">
+                    <input class="form-control" asp-for="BookName">
+                    <label asp-for="BookName"></label>
+                </div>
+            </div>
+            <div class="col-md">
+                <div class="form-floating">
+                    <select class="form-select" asp-for="CategoryId" asp-items="ViewBag.CategoryId" aria-label="Floating label select example">
+                    </select>
+                    <label asp-for="CategoryId"></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-2 my-2">
+            <div class="col-md">
+                <div class="form-floating">
+                    <input class="form-control" asp-for="AuthorName">
+                    <label asp-for="AuthorName"></label>
+                </div>
+            </div>
+            <div class="col-md my-2">
+                <div class="form-floating">
+                    <select class="form-select" asp-for="LanguageId" asp-items="ViewBag.LanguageId" aria-label="Floating label select example">
+                    </select>
+                    <label asp-for="LanguageId"></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center">
+            <button class="btn btn-success mx-2">Search</button>
+            <button class="btn btn-secondary mx-2">Reset</button>
+        </div>
+    </form>
+
+    <hr />
+
+    @await Component.InvokeAsync("ListViewBooks", new { isPaging = true, option = BookOptionEnum.SearchAdvanced, advModel = Model  })
+
+</div>
+
+@section scripts{
+  <script src="~/assets/js/reader/advanced_search.js"></script>
+}
